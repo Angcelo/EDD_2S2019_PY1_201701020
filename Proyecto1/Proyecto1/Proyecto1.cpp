@@ -3,9 +3,17 @@
 
 #include "pch.h"
 #include <iostream>
+#include <conio.h>
+#include "ArbolImagen.h";
 
 int main()
 {
+	ArbolImagen* arbol = new ArbolImagen();
+	arbol->Insertar("Madre");
+	arbol->Insertar("Padre");
+	arbol->Insertar("Hijo");
+	arbol->MostrarInorder(arbol->Padre);
+	_getch();
     std::cout << "Hello World!\n"; 
 }
 

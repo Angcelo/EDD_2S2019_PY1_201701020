@@ -3,11 +3,12 @@
 #define NodoCubo_H
 #include <iostream>
 #include <string>
-#include "CuboDisperso.h"	
+#include <cstring>
+#include "Cubopx.h"	
 class NodoCubo
 {
 public:
-	CuboDisperso imagen;
+	Cubopx imagen;
 	string nombre;
 	NodoCubo *izq = NULL;
 	NodoCubo *der = NULL;

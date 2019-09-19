@@ -11,6 +11,9 @@ public:
 	ArbolImagen();
 	~ArbolImagen();
 	void Insertar(string);
+	void insertarhoja(NodoCubo*, NodoCubo*);
+	void MostrarInorder(NodoCubo *);
+	int valorar(char letra);
 };
 #endif // !ArbolImagen_H
 
