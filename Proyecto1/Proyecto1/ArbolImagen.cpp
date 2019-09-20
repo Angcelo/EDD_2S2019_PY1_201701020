@@ -189,3 +189,15 @@ int ArbolImagen::valorar(char letra) {
 	return 0;
 }
 
+void ArbolImagen::InsertarImagen(char url[])
+{
+	if (DIR* dir=opendir(url))
+	{
+		while (dirent* ent =readdir(dir))
+		{
+			cout << ent->d_name << "\n";
+		}
+		closedir(dir);
+	}
+}
+

@@ -4,6 +4,7 @@
 #include <iostream>
 #include <string>
 #include <fstream>
+#include <dirent.h>
 #include <Windows.h>
 #include "NodoCubo.h"	
 using namespace std;;
@@ -19,6 +20,7 @@ public:
 	void CrearGrafico();
 	string AgregarNodoGrafico(string ,NodoCubo *);
 	int valorar(char letra);
+	void InsertarImagen(char url[]);
 };
 #endif // !ArbolImagen_H
 
