@@ -1,0 +1,5 @@
+digraph G { 
+Madre->Hijo
+Hijo->Hija
+Madre->Padre
+}

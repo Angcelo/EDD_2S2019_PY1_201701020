@@ -1,6 +1,9 @@
 #include "pch.h"
 #include "Cubopx.h"
-#include <string>;
+#include <string>
+#include <fstream>
+#include <Windows.h>
+
 
 Cubopx::Cubopx()
 {
@@ -46,7 +49,7 @@ Nodopx * Cubopx::BuscarCapa(int z)
 	Nodopx *temp = Raiz;
 	while (temp != NULL)
 	{
-		if (temp->x == z)
+		if (temp->z == z)
 		{
 			return temp;
 		}
@@ -65,14 +68,14 @@ Nodopx * Cubopx::CrearCol(int x)
 Nodopx * Cubopx::CrearFila(int y)
 {
 	Nodopx *cabezaFila = Raiz;
-	Nodopx *fila = InsertarCol(new Nodopx(-1, y, -1, "Fila"), cabezaFila);
+	Nodopx *fila = InsertarFila(new Nodopx(-1, y, -1, "Fila"), cabezaFila);
 	return fila;
 }
 
 Nodopx * Cubopx::CrearCapa(int z)
 {
 	Nodopx *cabezaCapa = Raiz;
-	Nodopx *capa = InsertarCol(new Nodopx(-1, -1, z, "Capa"), cabezaCapa);
+	Nodopx *capa = InsertarCapa(new Nodopx(-1, -1, z, "Capa"), cabezaCapa);
 	return capa;
 }
 
@@ -195,48 +198,49 @@ void Cubopx::insertar(int x, int y, int z, string px)
 	Nodopx *Interseccionyz = new Nodopx(-1, y, z, "yz");
 	//1)Col no, Fila no, Capa no
 	if (NodoCol==NULL && NodoFila==NULL && NodoCapa==NULL){
-		cout << "Caso1";
+		cout << "Caso1" << "\n";
 		NodoCol = CrearCol(x);
 		NodoFila = CrearFila(y);
 		NodoCapa = CrearCapa(z);
 	}
 	//2)Col no, Fila no, Capa si
 	else if (NodoCol == NULL && NodoFila == NULL && NodoCapa != NULL) {
-		cout << "Caso2";
+		cout << "Caso2" << "\n";
 		NodoCol = CrearCol(x);
 		NodoFila = CrearFila(y);
 	}
 	//3)Col no, Fila si, Capa no
 	else if (NodoCol == NULL && NodoFila != NULL && NodoCapa == NULL) {
-		cout << "Caso3";
+		cout << "Caso3" << "\n";
 		NodoCol = CrearCol(x);
 		NodoCapa = CrearCapa(z);
 	}
 	//4)Col no, Fila si, Capa si
 	else if (NodoCol == NULL && NodoFila != NULL && NodoCapa != NULL) {
-		cout << "Caso4";
+		cout << "Caso4" << "\n";
 		NodoCol = CrearCol(x);
 	}
 	//5)Col si, Fila no, Capa no
 	else if (NodoCol != NULL && NodoFila == NULL && NodoCapa == NULL) {
-		cout << "Caso5";
+		cout << "Caso5" << "\n";
 		NodoFila = CrearFila(y);
 		NodoCapa = CrearCapa(z);
 	}
 	//6)Col si, Fila no, Capa si
 	else if (NodoCol != NULL && NodoFila == NULL && NodoCapa != NULL) {
-		cout << "Caso6";
+		cout << "Caso6" << "\n";
 		NodoFila = CrearFila(y);
 	}
 	//7)Col si, Fila si, Capa no
 	else if (NodoCol != NULL && NodoFila != NULL && NodoCapa == NULL) {
-		cout << "Caso7";
+		cout << "Caso7" << "\n";
 		NodoCapa = CrearCapa(z);
 	}
 	//8)Col si, Fila si, Capa si
 	else if (NodoCol != NULL && NodoFila != NULL && NodoCapa != NULL) {
-		cout << "Caso8";
+		cout << "Caso8" << "\n";
 	}
+
 	Interseccionxy = InsertarCol(Interseccionxy, NodoFila);
 	Interseccionxy = InsertarFila(Interseccionxy, NodoCol);
 
@@ -249,6 +253,38 @@ void Cubopx::insertar(int x, int y, int z, string px)
 	nuevo = InsertarCol(nuevo, Interseccionyz);
 	nuevo = InsertarFila(nuevo, Interseccionxz);
 	nuevo = InsertarCapa(nuevo, Interseccionxy);
+}
+
+void Cubopx::BuscarNodoxyz(int x, int y, int z)
+{
+	Nodopx* temp = Raiz;
+	while (temp!=NULL)
+	{
+		if (temp->x == x) {
+			while (temp!=NULL)
+			{
+				if (temp->y==y)
+				{
+					while (temp != NULL) {
+						if (temp->z==z)
+						{
+							cout << "encontrado" << "\n";
+							return;
+						}
+						temp = temp->sup;
+					}
+				}
+				temp = temp->arriba;
+			}
+		}
+		temp = temp->sig;
+	}
+	cout << "Nodo no encontrado"<<"\n";
+}
+
+void Cubopx::InsertarImagen()
+{
+	
 }
 
 

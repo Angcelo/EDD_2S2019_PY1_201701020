@@ -21,13 +21,11 @@ void ArbolImagen::Insertar(string nombre)
 	else
 	{
 		NodoCubo *temp = Padre;
-		cout << nuevo->nombre[0] << "--" << temp->nombre[0];
 		if (valorar(nuevo->nombre[0])<=valorar(temp->nombre[0]))
 		{
 			if (temp->izq==NULL)
 			{
 				temp->izq = nuevo;
-				cout << "Insertado a la izquierda";
 			}
 			else
 			{
@@ -40,7 +38,6 @@ void ArbolImagen::Insertar(string nombre)
 			if (temp->der==NULL)
 			{
 				temp->der = nuevo;
-				cout << "Insertado a la derecha";
 			}
 			else
 			{
@@ -58,7 +55,6 @@ void ArbolImagen::insertarhoja(NodoCubo *nuevo, NodoCubo *temp)
 		if (temp->izq == NULL)
 		{
 			temp->izq = nuevo;
-			cout << "Insertado a la izquierda";
 		}
 		else
 		{
@@ -71,7 +67,6 @@ void ArbolImagen::insertarhoja(NodoCubo *nuevo, NodoCubo *temp)
 		if (temp->der == NULL)
 		{
 			temp->der = nuevo;
-			cout << "Insertado a la derecha";
 		}
 		else
 		{
@@ -81,20 +76,56 @@ void ArbolImagen::insertarhoja(NodoCubo *nuevo, NodoCubo *temp)
 	}
 }
 
-void ArbolImagen::MostrarInorder(NodoCubo* padre)
+int ArbolImagen::MostrarInorder(NodoCubo* padre, int valor)
 {
-	if (padre->izq!=NULL)
+	if (padre->izq != NULL)
 	{
-		MostrarInorder(padre->izq);
+		valor = MostrarInorder(padre->izq, valor);
 	}
-
-	cout << padre->nombre << "\n";
-
-	if(padre->der!=NULL)
+	cout << valor << ": " << padre->nombre << "\n";
+	valor++;
+	if (padre->der != NULL)
 	{
-		MostrarInorder(padre->der);
+		valor = MostrarInorder(padre->der, valor);
 	}
+	return valor;
 }
+
+void ArbolImagen::CrearGrafico()
+{
+	char buffer[MAX_PATH];
+	GetModuleFileNameA(NULL, buffer, MAX_PATH);
+	string::size_type pos = string(buffer).find_last_of("\\/");
+	string direccionactual= string(buffer).substr(0, pos);
+	ofstream file;
+	file.open("C:/Imagenes/arbol.dot");
+	file << "digraph G { \n";
+	NodoCubo *temp = Padre;
+	string valor = "";
+	valor = AgregarNodoGrafico(valor, temp);
+	file << valor;
+	file << "}";
+	file.close();
+	system("dot -Tjpg C:/Imagenes/arbol.dot -o C:/Imagenes/imgarbol.jpg");
+	system("C:/Imagenes/imgarbol.jpg");
+}
+
+string ArbolImagen::AgregarNodoGrafico(string valor,NodoCubo *temp)
+{
+	if (temp->izq!=NULL)
+	{
+		valor += temp->nombre + "->" + temp->izq->nombre+"\n";
+		valor = AgregarNodoGrafico(valor, temp->izq);
+	}
+	if (temp->der!=NULL)
+	{
+		valor += temp->nombre + "->" + temp->der->nombre+"\n";
+		valor = AgregarNodoGrafico(valor, temp->der);
+	}
+	return valor;
+}
+
+
 
 int ArbolImagen::valorar(char letra) {
 	letra=tolower(letra);

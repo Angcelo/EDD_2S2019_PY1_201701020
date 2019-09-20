@@ -3,7 +3,10 @@
 #define ArbolImagen_H
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <Windows.h>
 #include "NodoCubo.h"	
+using namespace std;;
 class ArbolImagen
 {
 public:
@@ -12,7 +15,9 @@ public:
 	~ArbolImagen();
 	void Insertar(string);
 	void insertarhoja(NodoCubo*, NodoCubo*);
-	void MostrarInorder(NodoCubo *);
+	int MostrarInorder(NodoCubo *,int);
+	void CrearGrafico();
+	string AgregarNodoGrafico(string ,NodoCubo *);
 	int valorar(char letra);
 };
 #endif // !ArbolImagen_H

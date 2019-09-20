@@ -4,15 +4,22 @@
 #include "pch.h"
 #include <iostream>
 #include <conio.h>
-#include "ArbolImagen.h";
+#include "ArbolImagen.h"
+#include "Cubopx.h"
 
 int main()
 {
-	ArbolImagen* arbol = new ArbolImagen();
-	arbol->Insertar("Madre");
-	arbol->Insertar("Padre");
-	arbol->Insertar("Hijo");
-	arbol->MostrarInorder(arbol->Padre);
+	Cubopx* nuevo = new Cubopx();
+	nuevo->insertar(0, 0, 0, "000");
+	nuevo->insertar(1, 0, 0, "xxx");
+	nuevo->insertar(0, 1, 0, "111");
+	nuevo->insertar(0, 0, 1, "222");
+	nuevo->insertar(1, 1, 1, "xxx");
+	nuevo->BuscarNodoxyz(0, 0, 0);
+	nuevo->BuscarNodoxyz(1, 0, 0);
+	nuevo->BuscarNodoxyz(0, 1, 0);
+	nuevo->BuscarNodoxzy(0, 1, 0);
+	nuevo->BuscarNodoyzx(0, 1, 0);
 	_getch();
     std::cout << "Hello World!\n"; 
 }
