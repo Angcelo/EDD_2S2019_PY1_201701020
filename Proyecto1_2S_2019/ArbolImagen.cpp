@@ -114,17 +114,13 @@ string ArbolImagen::AgregarNodoGrafico(string valor, NodoCubo* temp)
 {
 	if (temp->izq != NULL)
 	{
-		valor += temp->nombre + "->" + temp->izq->nombre + " \n";
+		valor += temp->nombre + "->" + temp->izq->nombre + "\n";
 		valor = AgregarNodoGrafico(valor, temp->izq);
 	}
 	if (temp->der != NULL)
 	{
-		valor += temp->nombre + "->" + temp->der->nombre + " \n";
+		valor += temp->nombre + "->" + temp->der->nombre + "\n";
 		valor = AgregarNodoGrafico(valor, temp->der);
-	}
-	if (temp->izq==NULL && temp->der==NULL)
-	{
-		valor += temp->nombre+" \n";
 	}
 	return valor;
 }
@@ -251,7 +247,7 @@ void ArbolImagen::InsertarImagen(const char url[])
 			cout << "---------------------------------\n";
 			string url1 = url;
 			string name = ent->d_name;
-			for (size_t i = 0; i < capa.size(); i++)
+			for (size_t i = 0; i < 2; i++)
 			{
 				char Comparar[128];
 				for (size_t m = 0; m < 128; m++)
