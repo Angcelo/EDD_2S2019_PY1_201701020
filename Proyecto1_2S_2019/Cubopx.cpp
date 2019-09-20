@@ -245,7 +245,7 @@ void Cubopx::insertar(int x, int y, int z, string px)
 	nuevo = InsertarCapa(nuevo, Interseccionxy);
 }
 
-void Cubopx::BuscarNodoxyz(int x, int y, int z)
+Nodopx* Cubopx::BuscarNodoxyz(int x, int y, int z)
 {
 	Nodopx* temp = Raiz;
 	while (temp != NULL)
@@ -258,6 +258,7 @@ void Cubopx::BuscarNodoxyz(int x, int y, int z)
 					while (temp != NULL) {
 						if (temp->z == z)
 						{
+							return temp;
 							cout << "encontrado" << "\n";
 							return;
 						}
@@ -270,4 +271,47 @@ void Cubopx::BuscarNodoxyz(int x, int y, int z)
 		temp = temp->sig;
 	}
 	cout << "Nodo no encontrado" << "\n";
+	return nullptr;
+}
+
+void Cubopx::dibujar_capa(int z)
+{
+	Nodopx* cabeza = BuscarNodoxyz(0, 0, 1);
+	Nodopx* tempy = cabeza;
+	ofstream file;
+	string direccion = "C:/Imagenes/Capa" + z;
+	direccion = direccion + ".dot";
+	file.open(direccion);
+	if (tempy !=NULL)
+	{
+		file << "digraph G { \n";
+		while (tempy !=NULL)
+		{
+			Nodopx* tempx = tempy;
+			file << "{rank = same;";
+			while (tempx != NULL) {
+				string xgruop = to_string(tempx->x) + to_string(tempx->y) + to_string(tempx->z);
+				string xgroup = "[vgroup=g"+ to_string(tempx->y) +"];";
+				file << xgroup;
+				tempx = tempx->sig;
+			}
+			file << "}\n";
+			tempy = tempy->arriba;
+		}
+	}
+	if (tempy != NULL)
+	{
+		while (tempy != NULL)
+		{
+			Nodopx* tempx = tempy;
+			file << "{rank = same;";
+			while (tempx != NULL) {
+				string xgruop = to_string(tempx->x) + to_string(tempx->y) + to_string(tempx->z);
+				file << xgruop;
+				tempx = tempx->sig;
+			}
+			file << "}\n";
+			tempy = tempy->arriba;
+		}
+	}
 }

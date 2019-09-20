@@ -3,6 +3,7 @@
 #define Cubopx_H
 #include <iostream>
 #include <string>
+#include <fstream>
 #include "Nodopx.h"
 class Cubopx
 {
@@ -26,6 +27,8 @@ public:
 
 	void insertar(int, int, int, string);
 
-	void BuscarNodoxyz(int, int, int);
+	Nodopx* BuscarNodoxyz(int, int, int);
+	
+	void dibujar_capa(int );
 };
 #endif // !Cubopx_h

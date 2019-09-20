@@ -10,6 +10,8 @@ int main()
 {
 	ArbolImagen* arbol = new ArbolImagen();
 	arbol->InsertarImagen("C:/Imagenes/Ave");
+	arbol->MostrarInorder(arbol->Padre,0);
+	arbol->CrearGrafico();
 	_getch();
     std::cout << "Hello World!\n";
 }
