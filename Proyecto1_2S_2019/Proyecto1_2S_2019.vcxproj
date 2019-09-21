@@ -153,14 +153,18 @@
   <ItemGroup>
     <ClCompile Include="ArbolImagen.cpp" />
     <ClCompile Include="Cubopx.cpp" />
+    <ClCompile Include="ListaFiltros.cpp" />
     <ClCompile Include="NodoCubo.cpp" />
+    <ClCompile Include="NodoCuboLista.cpp" />
     <ClCompile Include="Nodopx.cpp" />
     <ClCompile Include="Proyecto1_2S_2019.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="ArbolImagen.h" />
     <ClInclude Include="Cubopx.h" />
+    <ClInclude Include="ListaFiltros.h" />
     <ClInclude Include="NodoCubo.h" />
+    <ClInclude Include="NodoCuboLista.h" />
     <ClInclude Include="Nodopx.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

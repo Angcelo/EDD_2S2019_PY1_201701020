@@ -82,13 +82,33 @@ int ArbolImagen::MostrarInorder(NodoCubo* padre, int valor)
 	{
 		valor = MostrarInorder(padre->izq, valor);
 	}
-	cout << valor << ": " << padre->nombre << "\n";
+	padre->posicion = valor;
+	cout << padre->posicion << ": " << padre->nombre << "\n";
 	valor++;
 	if (padre->der != NULL)
 	{
 		valor = MostrarInorder(padre->der, valor);
 	}
 	return valor;
+}
+
+NodoCubo* ArbolImagen::Seleccionar(NodoCubo* padre,int ingreso)
+{
+	if (padre->posicion==ingreso)
+	{
+		cout << "imagen seleccionada: " << padre->nombre;
+		return padre;
+	}
+	if (padre->izq!=NULL)
+	{
+		Seleccionar(padre->izq, ingreso);
+	}
+	if (padre->der!=NULL)
+	{
+		Seleccionar(padre->der, ingreso);
+	}
+	cout << "No existe imagen";
+	return nullptr;
 }
 
 void ArbolImagen::CrearGrafico()
@@ -114,13 +134,17 @@ string ArbolImagen::AgregarNodoGrafico(string valor, NodoCubo* temp)
 {
 	if (temp->izq != NULL)
 	{
-		valor += temp->nombre + "->" + temp->izq->nombre + "\n";
+		valor += temp->nombre + "->" + temp->izq->nombre + " \n";
 		valor = AgregarNodoGrafico(valor, temp->izq);
 	}
 	if (temp->der != NULL)
 	{
-		valor += temp->nombre + "->" + temp->der->nombre + "\n";
+		valor += temp->nombre + "->" + temp->der->nombre + " \n";
 		valor = AgregarNodoGrafico(valor, temp->der);
+	}
+	if (temp->izq==NULL && temp->der==NULL)
+	{
+		valor += temp->nombre+" \n";
 	}
 	return valor;
 }
@@ -200,9 +224,9 @@ void ArbolImagen::InsertarImagen(const char url[])
 			{
 				string url1 = url;
 				string name = ent->d_name;
-				string urlname = url1 + "/" + name;
+				string urlname = url1 + "/inicial.csv";
 				ifstream lectura;
-				lectura.open("C:/Imagenes/Ave/inicial.csv");
+				lectura.open(urlname);
 				for (string linea; getline(lectura, linea);)
 				{
 					vector<string> temp;
@@ -211,7 +235,7 @@ void ArbolImagen::InsertarImagen(const char url[])
 					while (pos2!=linea.npos)
 					{
 						pos2 = linea.find(",", pos1);
-						if (pos2!=linea.npos)
+						if (pos2!=linea.npos+1)
 						{
 							if (pos2 > pos1) {
 								temp.push_back(linea.substr(pos1,pos2-pos1));
@@ -225,14 +249,6 @@ void ArbolImagen::InsertarImagen(const char url[])
 				break;
 			}
 		}
-		for (size_t i = 0; i < capa.size(); i++)
-		{
-			for (size_t j = 0; j < capa[i].size(); j++)
-			{
-				cout << capa[i][j]<<" ";
-			}
-			cout << "\n";
-		}
 	}
 	if (DIR * dir = opendir(url))
 	{
@@ -240,6 +256,7 @@ void ArbolImagen::InsertarImagen(const char url[])
 		string nombre = string(url).substr(inicio+1, sizeof(url));
 		cout << "Nombre archivo: " << nombre << "\n";
 		NodoCubo* seleccionactual = Insertar(nombre);
+		seleccionactual->capas = capa;
 		while (dirent * ent = readdir(dir))
 		{
 			cout << "_________________________________\n";
@@ -247,7 +264,7 @@ void ArbolImagen::InsertarImagen(const char url[])
 			cout << "---------------------------------\n";
 			string url1 = url;
 			string name = ent->d_name;
-			for (size_t i = 0; i < 2; i++)
+			for (size_t i = 0; i < capa.size(); i++)
 			{
 				char Comparar[128];
 				for (size_t m = 0; m < 128; m++)
@@ -258,10 +275,7 @@ void ArbolImagen::InsertarImagen(const char url[])
 				{
 					Comparar[n] = capa[i][1][n];
 				}
-				cout << Comparar<<" Compara ";
-				cout << ent->d_name<<"\n";
 				if (strcmp(Comparar, ent->d_name) == 0) {
-					cout << Comparar << " en la capa" << capa[i][0]<<"\n";
 					string urlname = url1 + "/" + name;
 					ifstream lectura;
 					lectura.open(urlname);
@@ -275,15 +289,18 @@ void ArbolImagen::InsertarImagen(const char url[])
 						while (pos2 != linea.npos)
 						{
 							pos2 = linea.find(",", pos1);
-							if (pos2 != linea.npos)
+							if (pos2 != linea.npos+1)
 							{
-								if (pos2 >= pos1) {
-									string px=(linea.substr(pos1, pos2 - pos1));
-									seleccionactual->imagen->insertar(x,y,z,px);
-									pos1 = pos2 + 1;
+								string px=(linea.substr(pos1, pos2 - pos1));
+								if (strcmp(px.c_str(),"x")==0)
+								{
+
 								}
+								else {
+									seleccionactual->imagen->insertar(x, y, z, px);
+								}
+								pos1 = pos2 + 1;
 							}
-							cout << "		" << x << "," << y << "," << z;
 							x++;
 						}
 						y++;
@@ -293,5 +310,13 @@ void ArbolImagen::InsertarImagen(const char url[])
 				}
 			}
 		}
+	}
+}
+
+void ArbolImagen::mostrarCapa(NodoCubo* temporal)
+{
+	for (size_t i = 1; i < temporal->capas.size(); i++)
+	{
+		cout << "Capa: " <<temporal->capas[i][0]<<" Nombre: "<< temporal->capas[i][1] <<"\n";
 	}
 }

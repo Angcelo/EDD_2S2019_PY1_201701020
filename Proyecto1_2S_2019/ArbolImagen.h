@@ -18,9 +18,11 @@ public:
 	NodoCubo* Insertar(string);
 	NodoCubo* insertarhoja(NodoCubo*, NodoCubo*);
 	int MostrarInorder(NodoCubo*, int);
+	NodoCubo* Seleccionar(NodoCubo*, int );
 	void CrearGrafico();
 	string AgregarNodoGrafico(string, NodoCubo*);
 	int valorar(char letra);
 	void InsertarImagen(const char url[]);
+	void mostrarCapa(NodoCubo*);
 };
 #endif // !ArbolImagen_H

@@ -3,15 +3,18 @@
 #define Cubopx_H
 #include <iostream>
 #include <string>
+#include <fstream>
+#include <cstdlib>
 #include "Nodopx.h"
 class Cubopx
 {
-private:
+public:
+
 	Nodopx* Raiz;
 	int tamaño;
-
-public:
 	Cubopx();
+
+
 	Nodopx* BuscarCol(int);
 	Nodopx* BuscarFila(int);
 	Nodopx* BuscarCapa(int);
@@ -26,6 +29,12 @@ public:
 
 	void insertar(int, int, int, string);
 
-	void BuscarNodoxyz(int, int, int);
+	Nodopx* BuscarNodoxyz(int, int, int);
+
+	Nodopx* InsertarColores(Nodopx* nuevo, string pixel);
+	
+	void dibujar_capa(int, string);
+
+	void HTMLCapa(string);
 };
 #endif // !Cubopx_h

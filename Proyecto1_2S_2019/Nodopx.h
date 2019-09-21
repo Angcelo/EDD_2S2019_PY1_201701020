@@ -6,17 +6,14 @@
 using namespace std;
 class Nodopx
 {
-
-
 public:
 	Nodopx();
 	Nodopx(int, int, int);
 	Nodopx(int, int, int, string);
 	~Nodopx();
-
 	int x, y, z;
 	string px;
-	string hexa;
+	int R, G, B, A;
 	Nodopx* sig = NULL;
 	Nodopx* ant = NULL;
 	Nodopx* arriba = NULL;
