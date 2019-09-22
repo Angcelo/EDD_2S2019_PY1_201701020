@@ -2,6 +2,7 @@
 
 ListaFiltros::ListaFiltros() {
 	inicio = NULL;
+	tamaño = 0;
 }
 
 
@@ -10,7 +11,7 @@ void ListaFiltros::Mostrar()
 {
 	int iteracion = 0;
 	NodoCuboLista* temp = inicio;
-	while (temp!=NULL)
+	while (iteracion<tamaño)
 	{
 		cout << iteracion << " " << temp->nombre<<"\n";
 		iteracion++;
@@ -22,7 +23,7 @@ NodoCuboLista* ListaFiltros::Seleccion(int a)
 {
 	int iteracion = 0;
 	NodoCuboLista* temp = inicio;
-	while (temp != NULL)
+	while (iteracion<tamaño)
 	{
 		if (iteracion==a)
 		{
@@ -41,17 +42,18 @@ void ListaFiltros::insertar(Cubopx* nuevo, vector<vector<string>> capas, string 
 	NodoCuboLista *nuevo2 = new NodoCuboLista(nombre, capas, nuevo);
 	if (inicio==NULL)
 	{
+		nuevo2->sig = inicio;
+		nuevo2->ant = inicio;
 		inicio = nuevo2;
+		tamaño++;
 	}
 	else
 	{
-		NodoCuboLista* temp = inicio;
-		while (temp->sig!=NULL)
-		{
-			temp = temp->sig;
-		}
-		temp->sig = nuevo2;
-		nuevo2->ant = temp;
+		nuevo2->sig = inicio;
+		nuevo2->ant = inicio->ant;
+		inicio->ant = nuevo2;
+		inicio = nuevo2;
+		tamaño++;
 	}
 }
 
@@ -359,28 +361,18 @@ void ListaFiltros::Dibujar()
 	file << "rankdir=LR;\n";
 	NodoCuboLista* temp = inicio;
 	string valor = "";
-	while (temp!=NULL)
+	int iteracion = 0;
+	while (iteracion<=tamaño)
 	{
-		if (temp->sig!=NULL)
-		{
-			file << temp->nombre;
-			file << "->";
-			file << temp->sig->nombre;
-			file << ";\n";
-		}
-		if (temp->ant!=NULL)
-		{
-			file << temp->nombre;
-			file << "->";
-			file << temp->ant->nombre;
-			file << ";\n";
-		}
-		if (temp->sig==NULL and temp->ant==NULL)
-		{
-			file << temp->nombre;
-		}
+		file << temp->nombre+" -> ";
+		//file << temp->nombre;
+		//file << "->";
+		//file << temp->ant->nombre;
+		//file << ";\n";
+		iteracion++;
 		temp = temp->sig;
 	}
+	file << "Null";
 	file << "}";
 	file.close();
 	system("dot -Tjpg C:/Imagenes/filtros.dot -o C:/Imagenes/imgfiltros.jpg");

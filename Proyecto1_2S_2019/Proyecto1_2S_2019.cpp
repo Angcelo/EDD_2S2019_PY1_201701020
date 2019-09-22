@@ -198,6 +198,10 @@ int main()
 			{
 			case 1:
 				aimg->CrearGrafico();
+				aimg->InicioGrafica(1);
+				aimg->InicioGrafica(2);
+				aimg->InicioGrafica(3);
+				_getch();
 				break;
 			case 2:
 				if (seleccion!=NULL)

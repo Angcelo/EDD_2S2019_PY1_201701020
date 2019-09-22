@@ -7,6 +7,7 @@ class ListaFiltros
 {
 public:
 	NodoCuboLista* inicio;
+	int tamaño;
 	bool ingresado=false;
 	ListaFiltros();
 

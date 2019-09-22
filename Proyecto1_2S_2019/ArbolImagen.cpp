@@ -92,6 +92,79 @@ int ArbolImagen::MostrarInorder(NodoCubo* padre, int valor)
 	return valor;
 }
 
+void ArbolImagen::InicioGrafica(int seleccion) {
+	ofstream file;
+	file.open("C:/Imagenes/arbol"+to_string(seleccion)+".dot");
+	file << "digraph G { \n"
+		"rankdir=LR;\n";
+	string valor = "";
+	switch (seleccion)
+	{
+	case 1:
+		file << GraficarInorder(Padre, valor);
+		file << "NULL";
+		break;
+	case 2:
+		file << GraficarPreorder(Padre, valor);
+		file << "NULL";
+		break;
+	case 3:
+		file << GraficarPostorder(Padre, valor);
+		file << "NULL";
+		break;
+	default:
+		break;
+	}
+	file << "}";
+	file.close();
+	string dot = "dot -Tjpg C:/Imagenes/arbol" + to_string(seleccion) + ".dot -o C:/Imagenes/imgarbol"+to_string(seleccion)+".jpg";
+	system(dot.c_str());
+	dot="C:/Imagenes/imgarbol" + to_string(seleccion) + ".jpg"; 
+	system(dot.c_str());
+}
+
+string ArbolImagen::GraficarInorder(NodoCubo* padre, string valor)
+{
+	if (padre->izq != NULL)
+	{
+		valor = GraficarInorder(padre->izq, valor);
+	}
+	valor += padre->nombre+ "->";
+	if (padre->der!=NULL)
+	{
+		valor = GraficarInorder(padre->der, valor);
+	}
+	return valor;
+}
+
+string ArbolImagen::GraficarPreorder(NodoCubo* padre, string valor)
+{
+	valor += padre->nombre + "->";
+	if (padre->izq != NULL)
+	{
+		valor = GraficarPreorder(padre->izq, valor);
+	}
+	if (padre->der != NULL)
+	{
+		valor = GraficarPreorder(padre->der, valor);
+	}
+	return valor;
+}
+
+string ArbolImagen::GraficarPostorder(NodoCubo* padre, string valor)
+{
+	if (padre->izq != NULL)
+	{
+		valor = GraficarPostorder(padre->izq, valor);
+	}
+	if (padre->der != NULL)
+	{
+		valor = GraficarPostorder(padre->der, valor);
+	}
+	valor += padre->nombre + "->";
+	return valor;
+}
+
 NodoCubo* ArbolImagen::Seleccionar(NodoCubo* padre,int ingreso)
 {
 	if (padre->posicion==ingreso)
@@ -119,9 +192,12 @@ void ArbolImagen::CrearGrafico()
 	string direccionactual = string(buffer).substr(0, pos);
 	ofstream file;
 	file.open("C:/Imagenes/arbol.dot");
-	file << "digraph G { \n";
+	file << "digraph G { \n"
+		"size = \"5,5\""
+		"node[shape = record, style = filled, fillcolor = gray95];";
 	NodoCubo* temp = Padre;
 	string valor = "";
+	valor = AgregarLabel(valor, temp);
 	valor = AgregarNodoGrafico(valor, temp);
 	file << valor;
 	file << "}";
@@ -145,6 +221,43 @@ string ArbolImagen::AgregarNodoGrafico(string valor, NodoCubo* temp)
 	if (temp->izq==NULL && temp->der==NULL)
 	{
 		valor += temp->nombre+" \n";
+	}
+	return valor;
+}
+
+string ArbolImagen::AgregarLabel(string valor, NodoCubo* temp)
+{
+	valor += temp->nombre + "[label = \"{" + temp->nombre;
+	Nodopx* buscar = temp->imagen->BuscarNodoxyz(0, 0, 0);
+	while (buscar != NULL)
+	{
+		if (strcmp(buscar->px.c_str(), "image_width") == 0)
+		{
+			valor += "|Ancho Imagen: " + buscar->sig->px;
+		}
+		else if (strcmp(buscar->px.c_str(), "image_height") == 0)
+		{
+			valor += "|Alto Imagen: " + buscar->sig->px;
+		}
+		else if (strcmp(buscar->px.c_str(), "pixel_width") == 0)
+		{
+			valor += "|Ancho Pixel: " + buscar->sig->px;
+		}
+		else if (strcmp(buscar->px.c_str(), "pixel_height") == 0)
+		{
+			valor += "|Alto Pixel: " + buscar->sig->px;
+		}
+		buscar = buscar->arriba;
+	}
+	valor += "}\"]\n";
+	if (temp->izq != NULL)
+	{
+		AgregarLabel(valor, temp->izq);
+	}
+
+	if (temp->der != NULL)
+	{
+		AgregarLabel(valor, temp->der);
 	}
 	return valor;
 }
