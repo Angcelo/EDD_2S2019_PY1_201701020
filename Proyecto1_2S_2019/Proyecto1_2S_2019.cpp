@@ -210,11 +210,15 @@ int main()
 					cout << "Seleccione capa a dibujar: ";
 					cin >> d;
 					seleccion->imagen->dibujar_capa(d, seleccion->nombre);
+					seleccion->imagen->LinealizacionFila(d, seleccion->nombre,1);
+					seleccion->imagen->LinealizacionColumna(d, seleccion->nombre, 2);
+					_getch();
 				}
 				break;
 			case 3:
 				if(seleccion!=NULL){
 					seleccion->filtros->Dibujar();
+					_getch();
 				}
 				break;
 			default:

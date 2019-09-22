@@ -1071,4 +1071,108 @@ void Cubopx::HTMLCapa(string nombre)
 	system(direccion.c_str());
 }
 
+void Cubopx::LinealizacionFila(int z, string nombre,int tipo)
+{
+	ofstream file;
+	string direccion2 = "C:/Imagenes/" + nombre+to_string(tipo) + "Capa" + to_string(z);
+	direccion2 = direccion2 + ".dot";
+	file.open(direccion2);
+	file << "digraph G { \n"
+		"rankdir=LR;\n"
+		"node[shape = record, style = filled, fillcolor = gray95];\n";
+	Nodopx* tempz = BuscarNodoxyz(-1, -1, z);
+	Nodopx* tempy = tempz;
+	tempy = tempy->arriba;
+	while (tempy!=NULL)
+	{
+		Nodopx* tempx=tempy;
+		tempx = tempx->sig;
+		while (tempx!=NULL)
+		{
+			file << to_string(tempx->x) + to_string(tempx->y) + to_string(tempx->z) +
+				"[label=\"{x:" + to_string(tempx->x) + "|y:" + to_string(tempx->y) + "|z:" + to_string(tempx->z) + "|px:" + tempx->px + "}\"]\n";
+			tempx = tempx->sig;
+		}
+		tempy = tempy->arriba;
+	}
+	tempy = tempz;
+	tempy = tempy->arriba;
+	while (tempy != NULL)
+	{
+		Nodopx* tempx = tempy;
+		tempx = tempx->sig;
+		while (tempx != NULL)
+		{
+			if (tempx->sig==NULL && tempy->arriba==NULL)
+			{
+				file << to_string(tempx->x) + to_string(tempx->y) + to_string(tempx->z);
+			}
+			else
+			{
+				file << to_string(tempx->x) + to_string(tempx->y) + to_string(tempx->z) + "->";
+			}
+			tempx = tempx->sig;
+		}
+		tempy = tempy->arriba;
+	}
+	file << "}";
+	file.close();
+	string dot= "dot -Tjpg C:/Imagenes/" + nombre + to_string(tipo) + "Capa" + to_string(z)+".dot -o C:/Imagenes/img"+ nombre + to_string(tipo) + "Capa" + to_string(z)+".jpg";
+	system(dot.c_str());
+	dot = "C:/Imagenes/img" + nombre + to_string(tipo) + "Capa" + to_string(z) + ".jpg";
+	system(dot.c_str());
+}
+
+void Cubopx::LinealizacionColumna(int z, string nombre, int tipo)
+{
+	ofstream file;
+	string direccion2 = "C:/Imagenes/" + nombre + to_string(tipo) + "Capa" + to_string(z);
+	direccion2 = direccion2 + ".dot";
+	file.open(direccion2);
+	file << "digraph G { \n"
+		"rankdir=LR;\n"
+		"node[shape = record, style = filled, fillcolor = gray95];\n";
+	Nodopx* tempz = BuscarNodoxyz(-1, -1, z);
+	Nodopx* tempx = tempz;
+	tempx = tempx->sig;
+	while (tempx != NULL)
+	{
+		Nodopx* tempy = tempx;
+		tempy = tempy->arriba;
+		while (tempy != NULL)
+		{
+			file << to_string(tempy->x) + to_string(tempy->y) + to_string(tempy->z) +
+				"[label=\"{x:" + to_string(tempy->x) + "|y:" + to_string(tempy->y) + "|z:" + to_string(tempy->z) + "|px:" + tempy->px + "}\"]\n";
+			tempy = tempy->arriba;
+		}
+		tempx = tempx->sig;
+	}
+	tempx = tempz;
+	tempx = tempx->sig;
+	while (tempx != NULL)
+	{
+		Nodopx* tempy = tempx;
+		tempy = tempy->arriba;
+		while (tempy != NULL)
+		{
+			if (tempy->arriba==NULL and tempx->sig==NULL)
+			{
+				file << to_string(tempy->x) + to_string(tempy->y) + to_string(tempy->z);
+			}
+			else 
+			{
+				file << to_string(tempy->x) + to_string(tempy->y) + to_string(tempy->z) + "->";
+			}
+			tempy = tempy->arriba;
+		}
+		tempx = tempx->sig;
+	}
+	file << "}";
+	file.close();
+	string dot = "dot -Tjpg C:/Imagenes/" + nombre + to_string(tipo) + "Capa" + to_string(z) + ".dot -o C:/Imagenes/img" + nombre + to_string(tipo) + "Capa" + to_string(z) + ".jpg";
+	system(dot.c_str());
+	dot = "C:/Imagenes/img" + nombre + to_string(tipo) + "Capa" + to_string(z) + ".jpg";
+	system(dot.c_str());
+}
+
 

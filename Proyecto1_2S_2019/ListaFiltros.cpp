@@ -42,15 +42,16 @@ void ListaFiltros::insertar(Cubopx* nuevo, vector<vector<string>> capas, string 
 	NodoCuboLista *nuevo2 = new NodoCuboLista(nombre, capas, nuevo);
 	if (inicio==NULL)
 	{
-		nuevo2->sig = inicio;
-		nuevo2->ant = inicio;
 		inicio = nuevo2;
+		inicio->ant = inicio;
+		inicio->sig = inicio;
 		tamaño++;
 	}
 	else
 	{
 		nuevo2->sig = inicio;
 		nuevo2->ant = inicio->ant;
+		inicio->ant->sig = nuevo2;
 		inicio->ant = nuevo2;
 		inicio = nuevo2;
 		tamaño++;
@@ -356,25 +357,21 @@ Cubopx* ListaFiltros::Modificarpx(Cubopx* nuevo, vector<vector<string>> capas, s
 void ListaFiltros::Dibujar()
 {
 	ofstream file;
-	file.open("C:/Imagenes/filtros.dot");
+	file.open("C:/Imagenes/Filtros.dot");
 	file << "digraph G { \n";
-	file << "rankdir=LR;\n";
-	NodoCuboLista* temp = inicio;
-	string valor = "";
 	int iteracion = 0;
-	while (iteracion<=tamaño)
+	NodoCuboLista* temp = inicio;
+	while (iteracion < tamaño)
 	{
-		file << temp->nombre+" -> ";
-		//file << temp->nombre;
-		//file << "->";
-		//file << temp->ant->nombre;
-		//file << ";\n";
+		file<< temp->nombre + "->" + temp->sig->nombre<<"\n";
+		file<< temp->nombre + "->" + temp->ant->nombre<< "\n";
 		iteracion++;
 		temp = temp->sig;
 	}
-	file << "Null";
 	file << "}";
 	file.close();
-	system("dot -Tjpg C:/Imagenes/filtros.dot -o C:/Imagenes/imgfiltros.jpg");
-	system("C:/Imagenes/imgfiltros.jpg");
+	string dot = "dot -Tjpg C:/Imagenes/Filtros.dot -o C:/Imagenes/imgFiltros.jpg";
+	system(dot.c_str());
+	dot = "C:/Imagenes/imgFiltros.jpg";
+	system(dot.c_str());
 }

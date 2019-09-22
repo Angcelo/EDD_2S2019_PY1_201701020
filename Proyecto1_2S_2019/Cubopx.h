@@ -36,5 +36,8 @@ public:
 	void dibujar_capa(int, string);
 
 	void HTMLCapa(string);
+
+	void LinealizacionFila(int, string,int);
+	void LinealizacionColumna(int, string, int);
 };
 #endif // !Cubopx_h
